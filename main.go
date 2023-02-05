@@ -2,7 +2,8 @@ package main
 
 import (
 	"context"
-	ginzap "github.com/gin-contrib/zap"
+	"github.com/brpaz/echozap"
+	"github.com/labstack/echo/v4"
 	"github.com/pkg/errors"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"github.com/sixwaaaay/temp-text/logic"
@@ -12,11 +13,10 @@ import (
 	"net/http"
 	"time"
 
+	echohook "github.com/labstack/echo/v4/middleware"
 	metrics "github.com/slok/go-http-metrics/metrics/prometheus"
 	"github.com/slok/go-http-metrics/middleware"
-	ginmiddleware "github.com/slok/go-http-metrics/middleware/gin"
-
-	"github.com/gin-gonic/gin"
+	metricsmiddleware "github.com/slok/go-http-metrics/middleware/echo"
 	"github.com/spf13/viper"
 )
 
@@ -44,7 +44,7 @@ func main() {
 	).Run()
 }
 
-func NewServer(lc fx.Lifecycle, logger *zap.Logger, router *gin.Engine, conf *Conf) *http.Server {
+func NewServer(lc fx.Lifecycle, logger *zap.Logger, router *echo.Echo, conf *Conf) *http.Server {
 	server := &http.Server{Addr: conf.ApiAddr, Handler: router}
 	// add lifecycle hooks for starting and gracefully stopping the server
 	lc.Append(fx.Hook{
@@ -76,7 +76,7 @@ func NewLogger() (*zap.Logger, error) {
 type Handler struct {
 	Method  string
 	Path    string
-	Handler gin.HandlerFunc
+	Handler echo.HandlerFunc
 }
 
 func NewHandlers(logger *zap.Logger, storage logic.Storage) []Handler {
@@ -94,20 +94,19 @@ func NewHandlers(logger *zap.Logger, storage logic.Storage) []Handler {
 		{
 			Method: "GET",
 			Path:   "/ping",
-			Handler: func(c *gin.Context) {
-				c.String(http.StatusOK, "pong")
+			Handler: func(c echo.Context) error {
+				return c.String(http.StatusOK, "pong")
 			},
 		},
 	}
 }
 
-func NewRouter(logger *zap.Logger, handlers []Handler) *gin.Engine {
-	gin.SetMode(gin.ReleaseMode)
-	router := gin.New()
+func NewRouter(logger *zap.Logger, handlers []Handler) *echo.Echo {
+	router := echo.New()
 	// replace gin default logger with zap logger
 	{
-		router.Use(ginzap.Ginzap(logger, time.RFC3339, true))
-		router.Use(ginzap.RecoveryWithZap(logger, true))
+		router.Use(echozap.ZapLogger(logger))
+		router.Use(echohook.Recover())
 	}
 
 	// add prometheus metrics middleware
@@ -115,14 +114,13 @@ func NewRouter(logger *zap.Logger, handlers []Handler) *gin.Engine {
 		metricsMiddleware := middleware.New(middleware.Config{
 			Recorder: metrics.NewRecorder(metrics.Config{}),
 		})
-
-		router.GET("/metrics", gin.WrapH(promhttp.Handler()))
-		router.Use(ginmiddleware.Handler("", metricsMiddleware))
+		router.GET("/metrics", echo.WrapHandler(promhttp.Handler()))
+		router.Use(metricsmiddleware.Handler("", metricsMiddleware))
 	}
 
 	// mount handlers
 	for _, handler := range handlers {
-		router.Handle(handler.Method, handler.Path, handler.Handler)
+		router.Add(handler.Method, handler.Path, handler.Handler)
 	}
 	return router
 }
