@@ -1,0 +1,64 @@
+basePath: /
+definitions:
+  logic.Resp-string:
+    properties:
+      code:
+        type: integer
+      data:
+        type: string
+      msg:
+        type: string
+    type: object
+host: localhost:8080
+info:
+  contact:
+    name: Source Code
+    url: https://github.com/sixwaaaay/temp-text
+  description: temporary text storage
+  license:
+    name: Apache 2.0 License
+    url: https://github.com/sixwaaaay/temp-text/blob/master/LICENSE
+  title: Temp-text API
+  version: "2.0"
+paths:
+  /query:
+    get:
+      description: query the text by tid
+      parameters:
+      - description: tid
+        in: query
+        name: tid
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/logic.Resp-string'
+      summary: Query
+      tags:
+      - HTTP API
+  /share:
+    post:
+      description: share the text
+      parameters:
+      - description: content
+        in: formData
+        name: content
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/logic.Resp-string'
+      summary: Share
+      tags:
+      - HTTP API
+schemes:
+- http
+swagger: "2.0"

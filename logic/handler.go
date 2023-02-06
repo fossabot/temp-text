@@ -7,6 +7,14 @@ import (
 	"time"
 )
 
+// QueryAPI godoc
+// @Summary query
+// @Description query the text by tid
+// @Tags HTTP API
+// @Produce json
+// @Param tid query string true "tid"
+// @Router /query [get]
+// @Success 200 {object} logic.Resp[string]
 func QueryAPI(logger *zap.Logger, storage Storage) echo.HandlerFunc {
 	return func(c echo.Context) error {
 		tid := c.QueryParam("tid")
@@ -32,6 +40,14 @@ func QueryAPI(logger *zap.Logger, storage Storage) echo.HandlerFunc {
 	}
 }
 
+// ShareAPI godoc
+// @Summary share
+// @Description share the text
+// @Tags HTTP API
+// @Produce json
+// @Param content formData string true "content"
+// @Router /share [post]
+// @Success 200 {object} logic.Resp[string]
 func ShareAPI(logger *zap.Logger, storage Storage) echo.HandlerFunc {
 	return func(c echo.Context) error {
 		content := c.FormValue("content")
