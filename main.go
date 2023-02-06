@@ -6,7 +6,9 @@ import (
 	"github.com/labstack/echo/v4"
 	"github.com/pkg/errors"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
+	_ "github.com/sixwaaaay/temp-text/docs"
 	"github.com/sixwaaaay/temp-text/logic"
+	echoSwagger "github.com/swaggo/echo-swagger"
 	"go.uber.org/fx"
 	"go.uber.org/fx/fxevent"
 	"go.uber.org/zap"
@@ -24,6 +26,20 @@ type Conf struct {
 	Redis   logic.RedisConfig
 	ApiAddr string `json:"ApiAddr"`
 }
+
+// @title Temp-text API
+// @version 2.0
+// @description temporary text storage
+
+// @contact.name Source Code
+// @contact.url https://github.com/sixwaaaay/temp-text
+
+// @license.name Apache 2.0 License
+// @license.url https://github.com/sixwaaaay/temp-text/blob/master/LICENSE
+
+// @host localhost:8080
+// @BasePath /
+// @schemes http
 
 func main() {
 	fx.New(
@@ -97,6 +113,11 @@ func NewHandlers(logger *zap.Logger, storage logic.Storage) []Handler {
 			Handler: func(c echo.Context) error {
 				return c.String(http.StatusOK, "pong")
 			},
+		},
+		{
+			Method:  "GET",
+			Path:    "/swagger/*",
+			Handler: echoSwagger.WrapHandler,
 		},
 	}
 }
