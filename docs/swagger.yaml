@@ -25,40 +25,40 @@ paths:
     get:
       description: query the text by tid
       parameters:
-      - description: tid
-        in: query
-        name: tid
-        required: true
-        type: string
+        - description: tid
+          in: query
+          name: tid
+          required: true
+          type: string
       produces:
-      - application/json
+        - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/logic.Resp-string'
+            $ref: "#/definitions/logic.Resp-string"
       summary: Query
       tags:
-      - HTTP API
+        - HTTP API
   /share:
     post:
       description: share the text
       parameters:
-      - description: content
-        in: formData
-        name: content
-        required: true
-        type: string
+        - description: content
+          in: formData
+          name: content
+          required: true
+          type: string
       produces:
-      - application/json
+        - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/logic.Resp-string'
+            $ref: "#/definitions/logic.Resp-string"
       summary: Share
       tags:
-      - HTTP API
+        - HTTP API
 schemes:
-- http
+  - http
 swagger: "2.0"
