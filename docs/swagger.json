@@ -1,7 +1,5 @@
 {
-  "schemes": [
-    "http"
-  ],
+  "schemes": ["http"],
   "swagger": "2.0",
   "info": {
     "description": "temporary text storage",
@@ -22,12 +20,8 @@
     "/query": {
       "get": {
         "description": "query the text by tid",
-        "produces": [
-          "application/json"
-        ],
-        "tags": [
-          "HTTP API"
-        ],
+        "produces": ["application/json"],
+        "tags": ["HTTP API"],
         "summary": "Query",
         "parameters": [
           {
@@ -51,12 +45,8 @@
     "/share": {
       "post": {
         "description": "share the text",
-        "produces": [
-          "application/json"
-        ],
-        "tags": [
-          "HTTP API"
-        ],
+        "produces": ["application/json"],
+        "tags": ["HTTP API"],
         "summary": "Share",
         "parameters": [
           {
