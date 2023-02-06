@@ -1,97 +1,97 @@
 {
-    "schemes": [
-        "http"
-    ],
-    "swagger": "2.0",
-    "info": {
-        "description": "temporary text storage",
-        "title": "Temp-text API",
-        "contact": {
-            "name": "Source Code",
-            "url": "https://github.com/sixwaaaay/temp-text"
-        },
-        "license": {
-            "name": "Apache 2.0 License",
-            "url": "https://github.com/sixwaaaay/temp-text/blob/master/LICENSE"
-        },
-        "version": "2.0"
+  "schemes": [
+    "http"
+  ],
+  "swagger": "2.0",
+  "info": {
+    "description": "temporary text storage",
+    "title": "Temp-text API",
+    "contact": {
+      "name": "Source Code",
+      "url": "https://github.com/sixwaaaay/temp-text"
     },
-    "host": "localhost:8080",
-    "basePath": "/",
-    "paths": {
-        "/query": {
-            "get": {
-                "description": "query the text by tid",
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "HTTP API"
-                ],
-                "summary": "Query",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "tid",
-                        "name": "tid",
-                        "in": "query",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/logic.Resp-string"
-                        }
-                    }
-                }
-            }
-        },
-        "/share": {
-            "post": {
-                "description": "share the text",
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "HTTP API"
-                ],
-                "summary": "Share",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "content",
-                        "name": "content",
-                        "in": "formData",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/logic.Resp-string"
-                        }
-                    }
-                }
-            }
-        }
+    "license": {
+      "name": "Apache 2.0 License",
+      "url": "https://github.com/sixwaaaay/temp-text/blob/master/LICENSE"
     },
-    "definitions": {
-        "logic.Resp-string": {
-            "type": "object",
-            "properties": {
-                "code": {
-                    "type": "integer"
-                },
-                "data": {
-                    "type": "string"
-                },
-                "msg": {
-                    "type": "string"
-                }
+    "version": "2.0"
+  },
+  "host": "localhost:8080",
+  "basePath": "/",
+  "paths": {
+    "/query": {
+      "get": {
+        "description": "query the text by tid",
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "HTTP API"
+        ],
+        "summary": "Query",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "tid",
+            "name": "tid",
+            "in": "query",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/logic.Resp-string"
             }
+          }
         }
+      }
+    },
+    "/share": {
+      "post": {
+        "description": "share the text",
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "HTTP API"
+        ],
+        "summary": "Share",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "content",
+            "name": "content",
+            "in": "formData",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/logic.Resp-string"
+            }
+          }
+        }
+      }
     }
+  },
+  "definitions": {
+    "logic.Resp-string": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer"
+        },
+        "data": {
+          "type": "string"
+        },
+        "msg": {
+          "type": "string"
+        }
+      }
+    }
+  }
 }
